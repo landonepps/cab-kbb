@@ -5,6 +5,8 @@
   "description": "Adds a Kelley Blue Book valuation lookup button to Cars & Bids listings.",
   "permissions": [
     "storage",
+    "webRequest",
+    "webRequestBlocking",
     "https://carsandbids.com/*",
     "https://www.carsandbids.com/*",
     "https://www.kbb.com/*"

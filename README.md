@@ -32,7 +32,11 @@ extension/
 4. Visit any Cars & Bids listing. A “KBB Valuation” card should appear underneath the title. Click **Check KBB Value** to fetch the latest Kelley Blue Book data.
 5. Configure your preferred ZIP code from the add-on’s options page (open via the extension’s menu or directly at `about:addons`).
 
-> **Note:** The extension makes direct requests to public KBB endpoints. If those endpoints change or introduce new anti-automation measures the lookup may fail; a direct link to KBB.com is provided as a fallback.
+> **Note:** The extension makes direct requests to public KBB endpoints and spoofs the required `Referer`/`Origin` headers so the requests resemble standard site traffic. If those endpoints change, introduce new anti-automation measures, or block your network the lookup may fail; a direct link to KBB.com is provided as a fallback.
+
+### Troubleshooting
+
+- **"NetworkError when attempting to fetch resource"** – Verify that your network can reach `www.kbb.com`. Some corporate or VPN networks block the domain, which prevents the extension from retrieving valuations. The widget will still expose a fallback link so you can open the valuation manually in a new tab.
 
 ## Packaging
 
