@@ -1,0 +1,70 @@
+:root {
+  color-scheme: light dark;
+  font-family: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  background: #f6f9fe;
+  color: #102a43;
+}
+
+.options {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(15, 47, 89, 0.1);
+}
+
+.options h1 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  border: 1px solid #cbd2d9;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+}
+
+button[type="submit"] {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  border: none;
+  background: #2f80ed;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background: #1f6ed1;
+}
+
+.options__hint {
+  font-size: 0.85rem;
+  color: #486581;
+}
+
+#status {
+  display: block;
+  margin-top: 0.75rem;
+  min-height: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.options__status--error {
+  color: #c9184a;
+}
