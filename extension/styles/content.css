@@ -1,0 +1,81 @@
+#cab-kbb-lookup {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(47, 128, 237, 0.12), rgba(72, 74, 240, 0.08));
+  border: 1px solid rgba(47, 128, 237, 0.35);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  color: #0f1f3d;
+  max-width: 640px;
+}
+
+.cab-kbb-banner__heading {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.cab-kbb-banner__status {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+
+.cab-kbb-banner__button {
+  appearance: none;
+  background-color: #2f80ed;
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cab-kbb-banner__button:hover:not(:disabled) {
+  background-color: #1f6ed1;
+}
+
+.cab-kbb-banner__button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.cab-kbb-banner__button:disabled {
+  background-color: #8fb7f5;
+  cursor: progress;
+}
+
+.cab-kbb-banner__details {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cab-kbb-banner__valuation {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+
+.cab-kbb-banner__valuation dt {
+  font-weight: 600;
+}
+
+.cab-kbb-banner__valuation dd {
+  margin: 0;
+  color: #1a3a6b;
+}
+
+.cab-kbb-banner__link {
+  color: #1f4aca;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cab-kbb-banner__link:hover {
+  text-decoration: underline;
+}

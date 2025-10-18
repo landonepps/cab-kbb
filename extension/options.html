@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cars &amp; Bids KBB Lookup – Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles/options.css" />
+  </head>
+  <body>
+    <main class="options">
+      <h1>Cars &amp; Bids KBB Lookup</h1>
+      <form id="settings-form">
+        <label for="zip">Default ZIP code</label>
+        <input id="zip" name="zip" type="text" pattern="\d{5}" maxlength="5" required />
+        <p class="options__hint">KBB requires a ZIP code to provide location-aware valuations. The extension uses this ZIP when requesting data.</p>
+        <button type="submit">Save</button>
+        <output id="status" role="status" aria-live="polite"></output>
+      </form>
+    </main>
+    <script type="module" src="scripts/options.js"></script>
+  </body>
+</html>
