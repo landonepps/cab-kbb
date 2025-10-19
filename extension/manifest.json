@@ -1,19 +1,19 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Cars & Bids KBB Lookup",
   "version": "1.0.0",
   "description": "Adds a Kelley Blue Book valuation lookup button to Cars & Bids listings.",
   "permissions": [
-    "storage"
-  ],
-  "host_permissions": [
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
     "https://carsandbids.com/*",
     "https://www.carsandbids.com/*",
     "https://www.kbb.com/*"
   ],
   "background": {
-    "service_worker": "scripts/background.js",
-    "type": "module"
+    "scripts": ["scripts/background.js"],
+    "persistent": true
   },
   "content_scripts": [
     {
@@ -26,7 +26,7 @@
       "run_at": "document_idle"
     }
   ],
-  "action": {
+  "browser_action": {
     "default_title": "Cars & Bids KBB Lookup"
   },
   "options_ui": {

@@ -1,6 +1,12 @@
 const browserApi = globalThis.browser ?? globalThis.chrome;
 
 const DEFAULT_ZIP = "90001";
+const KBB_ORIGIN = "https://www.kbb.com";
+const KBB_REFERER = `${KBB_ORIGIN}/`;
+const KBB_API_URL_PATTERNS = [
+  "https://www.kbb.com/api/*",
+  "https://www.kbb.com/whats-my-car-worth/api/*"
+];
 
 async function readSettings() {
   const stored = await browserApi.storage.local.get({ zip: DEFAULT_ZIP });
@@ -10,8 +16,27 @@ async function readSettings() {
   return { zip };
 }
 
+function buildKbbHeaders(initHeaders) {
+  const headers = new Headers(initHeaders ?? {});
+  if (!headers.has("accept")) {
+    headers.set("accept", "application/json, text/plain, */*");
+  }
+  if (!headers.has("referer")) {
+    headers.set("referer", KBB_REFERER);
+  }
+  if (!headers.has("origin")) {
+    headers.set("origin", KBB_ORIGIN);
+  }
+  return headers;
+}
+
 async function fetchJson(url, init) {
-  const response = await fetch(url, init);
+  const requestInit = {
+    ...init,
+    headers: buildKbbHeaders(init?.headers)
+  };
+
+  const response = await fetch(url, requestInit);
   if (!response.ok) {
     const body = await response.text();
     throw new Error(`Request failed with ${response.status}: ${body.substring(0, 200)}`);
@@ -27,14 +52,34 @@ async function fetchJson(url, init) {
 
 async function fetchKbbSuggestion(query) {
   const url = new URL("https://www.kbb.com/api/vehicle/vehicle-suggestions");
-  url.searchParams.set("vehicleCategory", "car");
-  url.searchParams.set("term", query);
-  url.searchParams.set("pageSize", "5");
-  const suggestions = await fetchJson(url);
-  if (!Array.isArray(suggestions)) {
-    return null;
+  const attempts = [
+    { vehicleCategory: "car" },
+    { vehicleCategory: "usedcar" },
+    { vehicleCategory: "newcar" },
+    {}
+  ];
+
+  for (const params of attempts) {
+    url.search = "";
+    url.searchParams.set("term", query);
+    url.searchParams.set("pageSize", "5");
+    Object.entries(params).forEach(([key, value]) => {
+      if (value != null) {
+        url.searchParams.set(key, value);
+      }
+    });
+
+    try {
+      const suggestions = await fetchJson(url);
+      if (Array.isArray(suggestions) && suggestions.length > 0) {
+        return suggestions[0];
+      }
+    } catch (error) {
+      console.warn("KBB suggestion request failed", params, error);
+    }
   }
-  return suggestions[0] ?? null;
+
+  return null;
 }
 
 async function fetchKbbValuations({ vehicleId, styleId, zip }) {
@@ -122,3 +167,34 @@ browserApi.runtime.onMessage.addListener((message, sender) => {
 
   return undefined;
 });
+
+function ensureKbbRequestHeaders(details) {
+  const headers = details.requestHeaders ? [...details.requestHeaders] : [];
+
+  const upsertHeader = (name, value) => {
+    const existing = headers.find(header => header.name.toLowerCase() === name.toLowerCase());
+    if (existing) {
+      existing.value = value;
+    } else {
+      headers.push({ name, value });
+    }
+  };
+
+  upsertHeader("Referer", KBB_REFERER);
+  upsertHeader("Origin", KBB_ORIGIN);
+  upsertHeader("Accept", "application/json, text/plain, */*");
+
+  return { requestHeaders: headers };
+}
+
+if (browserApi?.webRequest?.onBeforeSendHeaders) {
+  try {
+    browserApi.webRequest.onBeforeSendHeaders.addListener(
+      ensureKbbRequestHeaders,
+      { urls: KBB_API_URL_PATTERNS },
+      ["blocking", "requestHeaders", "extraHeaders"]
+    );
+  } catch (error) {
+    console.warn("Failed to register KBB header shim", error);
+  }
+}
